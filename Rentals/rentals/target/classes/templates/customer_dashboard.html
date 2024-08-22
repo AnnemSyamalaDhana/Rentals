@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Homes</title>
+    <style>
+        body {
+            min-height: 100vh;
+            background: url("https://res.cloudinary.com/dhwe5b8iz/image/upload/v1718274911/house6_avmtqw.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            display:flexbox;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+        .wel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(44, 62, 80, 0.8);
+            color: rgb(255, 255, 255);
+            text-shadow: 1px 1px 5px rgb(0, 0, 0);
+            font-size: 30px;
+            text-align: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .overall {
+            padding-top: 60px; 
+        }
+        .card {
+            display: flex;
+            align-items: center;
+            margin-top: 80px;
+            margin-bottom: 20px;
+            margin-left: 40px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 0px solid #000000;
+        }
+        .card img {
+            height: 36%;
+            width: 36%;
+            margin-left: 30px;
+            margin-right: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 15px rgba(255, 255, 255, 0.6);
+        }
+        .card_content {
+            border: 0px solid black;
+            padding: 10px;
+            width: 50%;
+            box-shadow: 1px 2px 12px rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .name_, .area_, .city_, .mobile_, .room_details_ {
+            font-size: 35px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 12px rgb(0, 0, 0);
+        }
+        .name, .area, .city, .mobile, .room_details {
+            font-size: 26px;
+            color: white;
+            margin-left: 50px;
+            text-shadow: 1px 1px 12px rgb(0, 0, 0);
+        }
+        .name_ {
+            position: relative;
+            left: 10%;
+            font-size: 40px;
+            margin-left: 30px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-shadow: 1px 2px 12px rgb(0, 0, 0);
+            color: rgb(48, 222, 10);
+            margin-bottom: 40px;
+        }
+        .area_ {
+            margin-left: 40px;
+        }
+        .city_ {
+            margin-left: 100px;
+        }
+        .mobile_ {
+            margin-left: 120px;
+            color: rgb(255, 255, 255);
+            text-shadow: 1px 2px 12px rgb(0, 0, 0);
+        }
+    </style>
+</head>
+<body>
+    <div class="wel">
+        <h4>Moving on up..!</h4>
+    </div>
+    <div class="overall">
+        <div th:if="${#lists.isEmpty(names)}">
+            <p>No Rooms found at this city</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(names)}">
+            <div th:each="index : ${#numbers.sequence(0, #lists.size(names) - 1)}">
+                <div class="card" id="right_card">
+                    <img th:src="@{${imagePaths[index]}}" alt="Room Image">
+                    <div class="card_content">
+                        <p class="name">Owner's name: <span class="name_" th:text="${names[index]}"></span></p>
+                        <p class="city">City: <span class="city_" th:text="${cities[index]}"></span></p>
+                        <p class="area">room area: <span class="area_" th:text="${areas[index]}"></span></p>
+                        <p class="mobile">Mobile: <span class="mobile_" th:text="${mobiles[index]}"></span></p>
+                        <p class="room_details">Room Details: <span class="room_details_" th:text="${roomDetails[index]}"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                card.addEventListener('click', function(event) {
+                    const clickedCard = event.currentTarget;
+                    const name = clickedCard.querySelector('.name_').textContent;
+                    const city = clickedCard.querySelector('.city_').textContent;
+                    const area = clickedCard.querySelector('.area_').textContent;
+                    const mobile = clickedCard.querySelector('.mobile_').textContent;
+                    const roomDetails = clickedCard.querySelector('.room_details_').textContent;
+                    const message = `Owner's name: ${name}\nCity: ${city}\nRoom area: ${area}\nMobile: ${mobile}\nRoom Details: ${roomDetails}`;
+                    alert(message);
+                });
+            });
+        });
+</script>
+</html>

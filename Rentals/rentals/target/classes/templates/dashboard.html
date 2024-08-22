@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url("https://res.cloudinary.com/dhwe5b8iz/image/upload/v1718274911/house6_avmtqw.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        h3 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #dcdcdc;
+            text-align: center;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(0,0,0,0.7);
+            border: 0px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 1px 2px 12px white;
+        }
+
+        .card img {
+            max-width: 150px;
+            margin-left: auto;
+            border-radius: 4px;
+        }
+
+        .card-content {
+            flex: 1;
+            margin-right: 10px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: white;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        #rooms_add {
+            display: none;
+        }
+        .name_{
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: #30de0a;
+            font-size: 35px;
+            text-shadow: 0px 0px 12px rgb(0, 0, 0);
+            font-weight: bold;
+        }
+        .wel{
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 40px;
+            color: white;
+            text-shadow: 0px 0px 12px black;
+            text-align: center;
+        }
+        .form-group1{
+            width: 200px;
+            height: 35px;
+            color: white;
+            background-color: #30475e;
+            box-shadow: 0px 0px 12px rgb(0, 0, 0);
+            border-radius: 10px;
+            font-size: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border: none;
+        }
+        .form-group1:hover {
+            background-color: #577590;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #dcdcdc;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="file"] {
+            padding: 8px;
+        }
+
+        .form-group2 {
+            width: 200px;
+            height: 35px;
+            background-color: #30475e;
+            color: white;
+            box-shadow: 0px 0px 12px rgb(0, 0, 0);
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .form-group2:hover {
+            background-color: #577590;
+        }
+
+        #show_msg2 {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wel">
+        <h3>Welcome To Owner's Dashboard</h3>
+    </div>
+        <input type="button" value="Add Room" onclick="add_room()" class="form-group1">
+        
+        <div id="rooms_add">
+            <form id="pagedata" onsubmit="save_room(event)" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Owner name:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile number:</label>
+                    <input type="text" id="mobile" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City name:</label>
+                    <input type="text" id="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="area">Area name:</label>
+                    <input type="text" id="area" required>
+                </div>
+                <div class="form-group">
+                    <label for="images">Room image:</label>
+                    <input type="file" name="img" id="images" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="room_details">Room details:</label>
+                    <input type="text" id="room_details" required>
+                </div>
+                <input type="submit" value="Upload Room" class="form-group2">
+                <p id="show_msg2"></p>
+            </form>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(names)}">
+            <p>No Rooms added</p>
+        </div>
+        
+        <div th:unless="${#lists.isEmpty(names)}">
+            <div th:each="index : ${#numbers.sequence(0, #lists.size(names) - 1)}">
+                <div class="card">
+                    <div class="card-content">
+                        <p>Name:     <span class="name_" th:text="${names[index]}"></span></p>
+                        <p>Area:      <span class="area_" th:text="${areas[index]}"></span></p>
+                        <p>City:      <span class="city_" th:text="${cities[index]}"></span></p>
+                        <p>Mobile:     <span class="mobile_" th:text="${mobiles[index]}"></span></p>
+                        <p>Room Details:   <span class="room_" th:text="${roomDetails[index]}"></span></p>
+                        <p>Room sDetails:   <span class="rooms_" th:text="${imagePaths[index]}"></span></p>
+                    </div>
+                    <img th:src="@{${imagePaths[index]}}" alt="Room Image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function add_room(){
+            document.getElementById("rooms_add").style.display = "block";
+        }
+        async function save_room(event){
+            event.preventDefault();
+            
+            const form = document.getElementById("pagedata");
+            const formData = new FormData(form);
+            
+            const data = {
+                username: [[${username}]],
+                name: document.getElementById("name").value,
+                mobile: document.getElementById("mobile").value,
+                city: document.getElementById("city").value,
+                area: document.getElementById("area").value,
+                room_details: document.getElementById("room_details").value
+            };
+            
+            formData.append('data', JSON.stringify(data));
+            
+            const response = await fetch('/upload_room', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                document.getElementById("show_msg2").textContent = "Room added";
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            } else {
+                alert('Failed to upload room. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
